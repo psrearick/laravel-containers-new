@@ -1,0 +1,68 @@
+{
+    "name": "psrearick/laravel-containers",
+    "description": "This is my package laravel-containers",
+    "keywords": [
+        "psrearick",
+        "laravel",
+        "laravel-containers"
+    ],
+    "homepage": "https://github.com/psrearick/laravel-containers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Phillip Rearick",
+            "email": "psrearick@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "spatie/laravel-package-tools": "^1.11"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^6.0",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^7.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psrearick\\Containers\\": "src",
+            "Psrearick\\Containers\\Tests\\Factories\\": "tests/Factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psrearick\\Containers\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=./.php_cs.dist.php",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Psrearick\\Containers\\ContainersServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
