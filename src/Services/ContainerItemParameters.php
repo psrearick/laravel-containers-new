@@ -6,9 +6,11 @@ class ContainerItemParameters
 {
     private array $parameters = [];
 
-    public function clear() : void
+    public function clear() : self
     {
         $this->parameters = [];
+
+        return $this;
     }
 
     public function get(string $key) : mixed
@@ -26,18 +28,24 @@ class ContainerItemParameters
         return array_key_exists($key, $this->parameters);
     }
 
-    public function remove(string $key) : void
+    public function remove(string $key) : self
     {
         unset($this->parameters[$key]);
+
+        return $this;
     }
 
-    public function set(string $key, mixed $value) : void
+    public function set(string $key, mixed $value) : self
     {
         $this->parameters[$key] = $value;
+
+        return $this;
     }
 
-    public function setAll(array $parameters) : void
+    public function setAll(array $parameters) : self
     {
         $this->parameters = $parameters;
+
+        return $this;
     }
 }

@@ -8,33 +8,14 @@ use Psrearick\Containers\Contracts\ItemContract as Item;
 use Psrearick\Containers\Services\ContainerItemParameters;
 use Psrearick\Containers\Services\ContainerItemRequest;
 use Psrearick\Containers\Tests\CardManagement\Factories\CardFactory;
+use Psrearick\Containers\Tests\CardManagement\Models\Traits\HasCollectionCardActions;
 
 class Card extends Model implements Item
 {
+    use HasCollectionCardActions;
     use HasFactory;
 
     protected $guarded = [];
-
-    public function updateParametersAction(ContainerItemRequest $request) : ContainerItemParameters
-    {
-        if ($request->getAction() === 'add') {
-            return $this->addCardToCollection($request);
-        }
-
-        if ($request->getAction() === 'remove') {
-            return $this->removeCardFromCollection($request);
-        }
-
-        if ($request->getAction() === 'move') {
-            return $this->moveCardToCollection($request);
-        }
-
-        if ($request->getAction() === 'update') {
-            return $this->updateParameterInCollection($request);
-        }
-
-        return $request->getParameters();
-    }
 
     protected static function newFactory() : CardFactory
     {
@@ -73,12 +54,20 @@ class Card extends Model implements Item
 
     private function moveCardToCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
-        return $request->getParameters();
+        $parameters = $request->getParameters();
+
+        $parameters->set('price', $this->price);
+
+        return $parameters;
     }
 
     private function removeCardFromCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
-        return $request->getParameters();
+        $parameters = $request->getParameters();
+
+        $parameters->set('price', $this->price);
+
+        return $parameters;
     }
 
     private function updateParameterInCollection(ContainerItemRequest $request) : ContainerItemParameters

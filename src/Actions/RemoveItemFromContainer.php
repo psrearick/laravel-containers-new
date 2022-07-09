@@ -7,6 +7,7 @@ use Psrearick\Containers\Containers;
 use Psrearick\Containers\Contracts\ContainerContract;
 use Psrearick\Containers\Contracts\ItemContract;
 use Psrearick\Containers\Services\ContainerItemParameters;
+use Psrearick\Containers\Services\ContainerItemRequest;
 
 class RemoveItemFromContainer
 {
@@ -28,6 +29,18 @@ class RemoveItemFromContainer
         }
 
         $newQuantity = $currentQuantity - abs($parameters->get('quantity'));
+
+        $request = new ContainerItemRequest(
+            'remove',
+            $container,
+            $item,
+            $parameters,
+            null,
+            $currentParameters
+        );
+
+        $parameters = app(InvokeUpdateParameterActions::class)->execute($item, $request) ?? $parameters;
+        $parameters = app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters;
 
         if ($newQuantity <= 0) {
             $containerItem->delete();

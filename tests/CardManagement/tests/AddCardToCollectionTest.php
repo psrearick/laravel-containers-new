@@ -114,11 +114,11 @@ test(
 
         $card->update(['price' => $cardPrice2]);
 
-        $parameters2 = new ContainerItemParameters();
+        $parameters->clear();
 
-        $parameters2->set('price', $cardPrice2);
+        $parameters->set('price', $cardPrice2);
 
-        app(Containers::class)->updateItemInContainer($card, $collection, $parameters2);
+        app(Containers::class)->updateItemInContainer($card, $collection, $parameters);
 
         $setParameters = app(Containers::class)->getParameters($card, $collection);
 
@@ -127,4 +127,51 @@ test(
     }
 );
 
-//test('a collection can track its value when being added', function () {});
+test(
+    'a collection can track its value when being added',
+    /**
+     * @throws JsonException
+     */
+    function () {
+        $card       = Card::factory()->create();
+        $collection = Collection::factory()->create();
+        $parameters = new ContainerItemParameters();
+        $cardPrice1 = $card->price;
+
+        $parameters->set('quantity', 1);
+        $parameters->set('price', $cardPrice1);
+
+        app(Containers::class)->addItemToContainer($card, $collection, $parameters);
+
+        $this->assertEquals($cardPrice1, $collection->value);
+        $this->assertEquals($cardPrice1, $collection->value_when_added);
+
+        $parameters->clear();
+
+        $cardPrice2 = $cardPrice1 * 2;
+
+        $card->update(['price' => $cardPrice2]);
+
+        $parameters->set('price', $cardPrice2);
+        $parameters->set('quantity', 2);
+
+        app(Containers::class)->addItemToContainer($card, $collection, $parameters);
+
+        $priceWhenAdded = ($cardPrice1 + ($cardPrice2 * 2));
+
+        $this->assertEquals($cardPrice2 * 3, $collection->value);
+        $this->assertEquals($priceWhenAdded, $collection->value_when_added);
+
+        $parameters->clear();
+
+        $cardPrice3 = $cardPrice2 * 2;
+        $card->update(['price' => $cardPrice3]);
+
+        $parameters->set('price', $cardPrice3);
+
+        app(Containers::class)->updateItemInContainer($card, $collection, $parameters);
+
+        $this->assertEquals($cardPrice3 * 3, $collection->value);
+        $this->assertEquals($priceWhenAdded, $collection->value_when_added);
+    }
+);

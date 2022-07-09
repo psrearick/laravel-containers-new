@@ -16,7 +16,8 @@ return new class () extends Migration {
         Schema::create('collections', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('total_value')->nullable();
+            $table->integer('value')->nullable();
+            $table->integer('value_when_added')->nullable();
             $table->timestamps();
         });
     }

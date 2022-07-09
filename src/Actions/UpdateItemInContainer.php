@@ -19,18 +19,17 @@ class UpdateItemInContainer
     {
         $currentParameters = app(Containers::class)->getParameters($item, $container);
 
-        if (method_exists($item, 'updateParametersAction')) {
-            $request = new ContainerItemRequest(
-                'update',
-                $container,
-                $item,
-                $parameters,
-                null,
-                $currentParameters
-            );
+        $request = new ContainerItemRequest(
+            'update',
+            $container,
+            $item,
+            $parameters,
+            null,
+            $currentParameters
+        );
 
-            $parameters = $item->updateParametersAction($request);
-        }
+        $parameters = app(InvokeUpdateParameterActions::class)->execute($item, $request) ?? $parameters;
+        $parameters = app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters;
 
         foreach ($parameters->getAll() as $key => $value) {
             $currentParameters->set($key, $value);
