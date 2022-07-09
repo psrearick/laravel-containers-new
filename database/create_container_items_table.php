@@ -13,7 +13,6 @@ return new class () extends  Migration
             $table->string('container_type');
             $table->foreignId('item_id');
             $table->string('item_type');
-            $table->integer('quantity');
             $table->json('parameters');
             $table->timestamps();
         });

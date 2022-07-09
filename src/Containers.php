@@ -38,8 +38,11 @@ class Containers
         return app(GetContainerItemParameters::class)->execute($item, $container);
     }
 
-    public function removeItemFromContainer(ItemContract $item, ContainerContract $container, ?int $quantity = 0) : void
-    {
-        app(RemoveItemFromContainer::class)->execute($item, $container, $quantity);
+    public function removeItemFromContainer(
+        ItemContract $item,
+        ContainerContract $container,
+        ContainerItemParameters $parameters
+    ) : void {
+        app(RemoveItemFromContainer::class)->execute($item, $container, $parameters);
     }
 }

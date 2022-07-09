@@ -6,17 +6,18 @@ use JsonException;
 use Psrearick\Containers\Containers;
 use Psrearick\Containers\Contracts\ContainerContract;
 use Psrearick\Containers\Contracts\ItemContract;
+use Psrearick\Containers\Services\ContainerItemParameters;
 
 class RemoveItemFromContainer
 {
     /**
      * @throws JsonException
      */
-    public function execute(ItemContract $item, ContainerContract $container, int $quantity = 0) : void
+    public function execute(ItemContract $item, ContainerContract $container, ContainerItemParameters $parameters) : void
     {
-        $parameters         = app(Containers::class)->getParameters($item, $container);
+        $currentParameters  = app(Containers::class)->getParameters($item, $container);
         $containerItem      = app(Containers::class)->getContainerItem($item, $container);
-        $currentQuantity    = $parameters->get('quantity');
+        $currentQuantity    = $currentParameters->get('quantity');
 
         if (! $containerItem) {
             return;
@@ -26,7 +27,7 @@ class RemoveItemFromContainer
             return;
         }
 
-        $newQuantity = $currentQuantity - $quantity;
+        $newQuantity = $currentQuantity - abs($parameters->get('quantity'));
 
         if ($newQuantity <= 0) {
             $containerItem->delete();
