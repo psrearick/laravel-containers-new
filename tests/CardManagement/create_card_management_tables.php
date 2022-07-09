@@ -9,12 +9,14 @@ return new class () extends Migration {
         Schema::create('cards', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
 
         Schema::create('collections', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('total_value')->nullable();
             $table->timestamps();
         });
     }

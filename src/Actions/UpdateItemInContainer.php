@@ -10,25 +10,18 @@ use Psrearick\Containers\Models\ContainerItem;
 use Psrearick\Containers\Services\ContainerItemParameters;
 use Psrearick\Containers\Services\ContainerItemRequest;
 
-class AddItemToContainer
+class UpdateItemInContainer
 {
     /**
      * @throws JsonException
      */
-    public function execute(
-        ItemContract $item,
-        ContainerContract $container,
-        ContainerItemParameters $parameters
-    ) : void {
-        if (! $parameters->get('quantity')) {
-            return;
-        }
-
+    public function execute(ItemContract $item, ContainerContract $container, ContainerItemParameters $parameters) : void
+    {
         $currentParameters = app(Containers::class)->getParameters($item, $container);
 
         if (method_exists($item, 'updateParametersAction')) {
             $request = new ContainerItemRequest(
-                'add',
+                'update',
                 $container,
                 $item,
                 $parameters,
@@ -39,7 +32,9 @@ class AddItemToContainer
             $parameters = $item->updateParametersAction($request);
         }
 
-        $parameters->set('quantity', ($currentParameters->get('quantity') ?? 0) + $parameters->get('quantity'));
+        foreach ($parameters->getAll() as $key => $value) {
+            $currentParameters->set($key, $value);
+        }
 
         ContainerItem::updateOrCreate([
             'container_id'   => $container->id,
@@ -47,7 +42,7 @@ class AddItemToContainer
             'item_id'        => $item->id,
             'item_type'      => get_class($item),
         ], [
-            'parameters'     => json_encode($parameters->getAll(), JSON_THROW_ON_ERROR),
+            'parameters'     => json_encode($currentParameters->getAll(), JSON_THROW_ON_ERROR),
         ]);
     }
 }

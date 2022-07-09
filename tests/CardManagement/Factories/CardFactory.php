@@ -13,6 +13,7 @@ class CardFactory extends Factory
     {
         return [
             'name'  => $this->faker->words(3, true),
+            'price' => $this->faker->randomNumber(4),
         ];
     }
 }
