@@ -53,7 +53,8 @@ test(
     }
 );
 
-test('removing a card from a collection updates the collection value',
+test(
+    'removing a card from a collection updates the collection value',
     /**
      * @throws JsonException
      */
