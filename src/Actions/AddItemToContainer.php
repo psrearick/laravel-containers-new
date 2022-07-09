@@ -2,7 +2,6 @@
 
 namespace Psrearick\Containers\Actions;
 
-use JsonException;
 use Psrearick\Containers\Containers;
 use Psrearick\Containers\Contracts\ContainerContract;
 use Psrearick\Containers\Contracts\ItemContract;
@@ -12,9 +11,6 @@ use Psrearick\Containers\Services\ContainerItemRequest;
 
 class AddItemToContainer
 {
-    /**
-     * @throws JsonException
-     */
     public function execute(
         ItemContract $item,
         ContainerContract $container,
@@ -46,7 +42,7 @@ class AddItemToContainer
             'item_id'        => $item->id,
             'item_type'      => get_class($item),
         ], [
-            'parameters'     => json_encode($parameters->getAll(), JSON_THROW_ON_ERROR),
+            'parameters'     => $parameters->getAll(),
         ]);
     }
 }

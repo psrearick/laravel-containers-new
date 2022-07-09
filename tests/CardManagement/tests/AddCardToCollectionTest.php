@@ -7,9 +7,6 @@ use Psrearick\Containers\Tests\CardManagement\Models\Collection;
 
 test(
     'a card can be added to a collection',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -27,9 +24,6 @@ test(
 
 test(
     'a card can increase its quantity in a collection',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -51,9 +45,6 @@ test(
 
 test(
     'an item can track its price when being added',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -91,9 +82,6 @@ test(
 
 test(
     'a card can update its price without changing other parameters',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -129,9 +117,6 @@ test(
 
 test(
     'a collection can track its value when being added',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();

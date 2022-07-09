@@ -2,7 +2,6 @@
 
 namespace Psrearick\Containers;
 
-use JsonException;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\GetContainerItem;
 use Psrearick\Containers\Actions\GetContainerItemParameters;
@@ -15,9 +14,6 @@ use Psrearick\Containers\Services\ContainerItemParameters;
 
 class Containers
 {
-    /**
-     * @throws JsonException
-     */
     public function addItemToContainer(
         ItemContract $item,
         ContainerContract $container,
@@ -31,17 +27,21 @@ class Containers
         return app(GetContainerItem::class)->execute($item, $container);
     }
 
-    /**
-     * @throws JsonException
-     */
+    public function getContainerItems(ContainerContract $container, string $itemClass) : array
+    {
+        return ContainerItem::query()
+            ->where('container_id', $container->id)
+            ->where('container_type', get_class($container))
+            ->where('item_type', $itemClass)
+            ->get()
+            ->toArray();
+    }
+
     public function getParameters(ItemContract $item, ContainerContract $container) : ContainerItemParameters
     {
         return app(GetContainerItemParameters::class)->execute($item, $container);
     }
 
-    /**
-     * @throws JsonException
-     */
     public function removeItemFromContainer(
         ItemContract $item,
         ContainerContract $container,

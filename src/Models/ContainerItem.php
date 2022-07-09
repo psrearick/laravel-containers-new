@@ -14,5 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ContainerItem extends Model
 {
+    protected $casts = [
+        'parameters' => 'array',
+    ];
+
     protected $guarded = [];
 }

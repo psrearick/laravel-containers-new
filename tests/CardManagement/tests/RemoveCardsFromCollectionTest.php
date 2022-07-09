@@ -7,9 +7,6 @@ use Psrearick\Containers\Tests\CardManagement\Models\Collection;
 
 test(
     'a card can be removed from a collection',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -31,9 +28,6 @@ test(
 
 test(
     'a card can be partially remove from a collection',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
@@ -55,9 +49,6 @@ test(
 
 test(
     'removing a card from a collection updates the collection value',
-    /**
-     * @throws JsonException
-     */
     function () {
         $card       = Card::factory()->create();
         $collection = Collection::factory()->create();
