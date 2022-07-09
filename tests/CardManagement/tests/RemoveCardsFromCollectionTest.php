@@ -52,3 +52,27 @@ test(
         $this->assertEquals(1, $setParameters->get('quantity'));
     }
 );
+
+test('removing a card from a collection updates the collection value',
+    /**
+     * @throws JsonException
+     */
+    function () {
+        $card       = Card::factory()->create();
+        $collection = Collection::factory()->create();
+        $parameters = new ContainerItemParameters();
+
+        $parameters->set('quantity', 2);
+        $parameters->set('price', $card->price);
+
+        app(Containers::class)->addItemToContainer($card, $collection, $parameters);
+        $this->assertEquals($card->price * 2, $collection->value);
+
+        $parameters->clear();
+        $parameters->set('quantity', -1);
+
+        app(Containers::class)->removeItemFromContainer($card, $collection, $parameters);
+
+        $this->assertEquals($card->price, $collection->value);
+    }
+);

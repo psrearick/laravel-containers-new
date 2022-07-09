@@ -54,6 +54,18 @@ class Collection extends Model implements Container
         return $parameters;
     }
 
+    private function removeCardFromCollection(ContainerItemRequest $request) : ContainerItemParameters
+    {
+        $parameters = $request->getParameters();
+        $price      = $request->getItem()->price;
+        $quantity   = abs($parameters->get('quantity'));
+        $change     = $price * $quantity;
+
+        $this->update(['value' => $this->value - $change]);
+
+        return $parameters;
+    }
+
     private function updateParameterInCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
         $currentParameters  = $request->getCurrentParameters();
