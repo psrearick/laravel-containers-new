@@ -24,6 +24,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
+        (include __DIR__ . '/../database/create_container_items_table.php')->up();
         (include 'CardManagement/create_card_management_tables.php')->up();
 
 //        (include 'Migrations/create_container_items_table.php')->up();
