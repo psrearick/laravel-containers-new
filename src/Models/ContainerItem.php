@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $container_type
  * @property int $item_id
  * @property string $item_type
- * @property string $parameters
+ * @property string|array $parameters
  */
 class ContainerItem extends Model
 {
