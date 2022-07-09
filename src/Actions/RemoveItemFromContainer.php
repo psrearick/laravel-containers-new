@@ -28,8 +28,6 @@ class RemoveItemFromContainer
 
         $newQuantity = $currentQuantity - $quantity;
 
-        ray($quantity);
-
         if ($newQuantity <= 0) {
             $containerItem->delete();
         } else {
