@@ -61,10 +61,34 @@ test(
         $this->assertEquals($card->price * 2, $collection->value);
 
         $parameters->clear();
+        $parameters->set('quantity', -2);
+
+        app(Containers::class)->removeItemFromContainer($card, $collection, $parameters);
+
+        $this->assertEquals(0, $collection->value);
+        $this->assertEquals(0, $collection->value_when_added);
+    }
+);
+
+test(
+    'partially removing a card from a collection updates the collection value',
+    function () {
+        $card       = Card::factory()->create();
+        $collection = Collection::factory()->create();
+        $parameters = new ContainerItemParameters();
+
+        $parameters->set('quantity', 2);
+        $parameters->set('price', $card->price);
+
+        app(Containers::class)->addItemToContainer($card, $collection, $parameters);
+        $this->assertEquals($card->price * 2, $collection->value);
+
+        $parameters->clear();
         $parameters->set('quantity', -1);
 
         app(Containers::class)->removeItemFromContainer($card, $collection, $parameters);
 
         $this->assertEquals($card->price, $collection->value);
+        $this->assertEquals($card->price, $collection->value_when_added);
     }
 );

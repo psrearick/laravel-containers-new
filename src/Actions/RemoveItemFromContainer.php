@@ -36,14 +36,19 @@ class RemoveItemFromContainer
         );
 
         $parameters = app(InvokeUpdateParameterActions::class)->execute($item, $request) ?? $parameters;
-        $parameters = app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters;
+        $request->setParameters($parameters);
+
+        $parameters =
+            (app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters)
+            ->set('quantity', $newQuantity);
 
         if ($newQuantity <= 0) {
             $containerItem->delete();
-        } else {
-            $parameters->set('quantity', $newQuantity);
-            $containerItem->parameters = $parameters->getAll();
-            $containerItem->save();
+
+            return;
         }
+
+        $containerItem->parameters = $parameters->getAll();
+        $containerItem->save();
     }
 }

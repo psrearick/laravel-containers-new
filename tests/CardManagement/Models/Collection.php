@@ -4,6 +4,7 @@ namespace Psrearick\Containers\Tests\CardManagement\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Psrearick\Containers\Containers;
 use Psrearick\Containers\Contracts\ContainerContract as Container;
 use Psrearick\Containers\Services\ContainerItemParameters;
 use Psrearick\Containers\Services\ContainerItemRequest;
@@ -56,12 +57,19 @@ class Collection extends Model implements Container
 
     private function removeCardFromCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
-        $parameters = $request->getParameters();
-        $price      = $request->getItem()->price;
-        $quantity   = abs($parameters->get('quantity'));
-        $change     = $price * $quantity;
+        $parameters     = $request->getParameters();
+        $price          = $request->getItem()->price;
+        $addedPrice     = $parameters->get('price_when_added');
+        $quantity       = abs($parameters->get('quantity'));
+        $change         = $price * $quantity;
+        $addedChange    = $addedPrice * $quantity;
 
-        $this->update(['value' => $this->value - $change]);
+        $items = app(Containers::class)->getContainerItems($this, get_class($request->getItem()));
+
+        $this->update([
+            'value'            => $this->value - $change,
+            'value_when_added' => $this->value_when_added - $addedChange,
+        ]);
 
         return $parameters;
     }

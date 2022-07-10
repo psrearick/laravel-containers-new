@@ -35,6 +35,15 @@ class ContainerItemParameters
         return $this;
     }
 
+    public function replaceAll(array $parameters) : self
+    {
+        foreach ($parameters as $key => $value) {
+            $this->set($key, $value);
+        }
+
+        return $this;
+    }
+
     public function set(string $key, mixed $value) : self
     {
         $this->parameters[$key] = $value;

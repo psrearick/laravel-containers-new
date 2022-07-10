@@ -64,4 +64,34 @@ class ContainerItemRequest
     {
         return $this->parameters;
     }
+
+    public function setAction(string $action) : void
+    {
+        $this->action = $action;
+    }
+
+    public function setContainer(ContainerContract $container) : void
+    {
+        $this->container = $container;
+    }
+
+    public function setCurrentParameters(ContainerItemParameters $currentParameters) : void
+    {
+        $this->currentParameters = $currentParameters;
+    }
+
+    public function setDestination(ContainerContract $destination) : void
+    {
+        $this->destination = $destination;
+    }
+
+    public function setItem(ItemContract $item) : void
+    {
+        $this->item = $item;
+    }
+
+    public function setParameters(ContainerItemParameters $parameters) : void
+    {
+        $this->parameters = $parameters;
+    }
 }

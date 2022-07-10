@@ -63,11 +63,14 @@ class Card extends Model implements Item
 
     private function removeCardFromCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
-        $parameters = $request->getParameters();
+        $parameters         = $request->getParameters();
+        $currentParameters  = $request->getCurrentParameters();
 
-        $parameters->set('price', $this->price);
+        $currentParameters
+            ->replaceAll($parameters->getAll())
+            ->set('price', $this->price);
 
-        return $parameters;
+        return $currentParameters;
     }
 
     private function updateParameterInCollection(ContainerItemRequest $request) : ContainerItemParameters

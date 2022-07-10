@@ -25,11 +25,11 @@ class UpdateItemInContainer
         );
 
         $parameters = app(InvokeUpdateParameterActions::class)->execute($item, $request) ?? $parameters;
+        $request->setParameters($parameters);
+
         $parameters = app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters;
 
-        foreach ($parameters->getAll() as $key => $value) {
-            $currentParameters->set($key, $value);
-        }
+        $currentParameters->replaceAll($parameters->getAll());
 
         ContainerItem::updateOrCreate([
             'container_id'   => $container->id,

@@ -5,6 +5,7 @@ namespace Psrearick\Containers;
 use Psrearick\Containers\Actions\AddItemToContainer;
 use Psrearick\Containers\Actions\GetContainerItem;
 use Psrearick\Containers\Actions\GetContainerItemParameters;
+use Psrearick\Containers\Actions\MoveItemToContainer;
 use Psrearick\Containers\Actions\RemoveItemFromContainer;
 use Psrearick\Containers\Actions\UpdateItemInContainer;
 use Psrearick\Containers\Contracts\ContainerContract;
@@ -40,6 +41,15 @@ class Containers
     public function getParameters(ItemContract $item, ContainerContract $container) : ContainerItemParameters
     {
         return app(GetContainerItemParameters::class)->execute($item, $container);
+    }
+
+    public function moveItemToContainer(
+        ItemContract $item,
+        ContainerContract $source,
+        ContainerContract $destination,
+        ContainerItemParameters $parameters
+    ) : void {
+        app(MoveItemToContainer::class)->execute($item, $source, $destination, $parameters);
     }
 
     public function removeItemFromContainer(
