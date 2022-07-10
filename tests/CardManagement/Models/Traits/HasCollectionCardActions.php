@@ -17,10 +17,6 @@ trait HasCollectionCardActions
             return $this->removeCardFromCollection($request);
         }
 
-        if ($request->getAction() === 'move') {
-            return $this->moveCardToCollection($request);
-        }
-
         if ($request->getAction() === 'update') {
             return $this->updateParameterInCollection($request);
         }
@@ -29,11 +25,6 @@ trait HasCollectionCardActions
     }
 
     protected function addCardToCollection(ContainerItemRequest $request) : ContainerItemParameters
-    {
-        return $request->getParameters();
-    }
-
-    protected function moveCardToCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
         return $request->getParameters();
     }

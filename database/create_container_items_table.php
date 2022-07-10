@@ -13,7 +13,7 @@ return new class () extends  Migration
             $table->string('container_type');
             $table->foreignId('item_id');
             $table->string('item_type');
-            $table->json('parameters');
+            $table->json('parameters')->nullable();
             $table->timestamps();
         });
     }

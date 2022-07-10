@@ -52,15 +52,6 @@ class Card extends Model implements Item
         return $parameters;
     }
 
-    private function moveCardToCollection(ContainerItemRequest $request) : ContainerItemParameters
-    {
-        $parameters = $request->getParameters();
-
-        $parameters->set('price', $this->price);
-
-        return $parameters;
-    }
-
     private function removeCardFromCollection(ContainerItemRequest $request) : ContainerItemParameters
     {
         $parameters         = $request->getParameters();
