@@ -8,7 +8,7 @@ use Psrearick\Containers\Models\ContainerItem;
 
 class GetContainerItem
 {
-    public function execute(ItemContract $item, ContainerContract $container) : ?ContainerItem
+    public function execute(ItemContract|ContainerContract $item, ContainerContract $container) : ?ContainerItem
     {
         return ContainerItem::where([
             'container_id'   => $container->id,

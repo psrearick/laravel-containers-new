@@ -26,7 +26,17 @@ class Containers
         app(AddItemToContainer::class)->execute($item, $container, $parameters);
     }
 
-    public function getContainerItem(ItemContract $item, ContainerContract $container) : ?ContainerItem
+    public function getChildContainerItem(ContainerContract $child, ContainerContract $parent) : ?ContainerItem
+    {
+        return $this->getContainerItem($child, $parent);
+    }
+
+    public function getChildrenContainers(ContainerContract $container, string $childClass) : array
+    {
+        return $this->getContainerItems($container, $childClass);
+    }
+
+    public function getContainerItem(ItemContract|ContainerContract $item, ContainerContract $container) : ?ContainerItem
     {
         return app(GetContainerItem::class)->execute($item, $container);
     }
