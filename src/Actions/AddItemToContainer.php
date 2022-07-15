@@ -37,6 +37,7 @@ class AddItemToContainer
         $parameters =
             (app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters)
             ->set('quantity', ($currentParameters->get('quantity') ?? 0) + $parameters->get('quantity'));
+        $request->setParameters($parameters);
 
         ContainerItem::updateOrCreate([
             'container_id'   => $container->id,
@@ -46,5 +47,7 @@ class AddItemToContainer
         ], [
             'parameters'     => $parameters->getAll(),
         ]);
+
+        app(PropagateActions::class)->execute($container, $request);
     }
 }

@@ -11,7 +11,7 @@ use Psrearick\Containers\Services\ContainerItemRequest;
 
 class UpdateItemInContainer
 {
-    public function execute(ItemContract $item, ContainerContract $container, ContainerItemParameters $parameters) : void
+    public function execute(ItemContract $item, ContainerContract|ItemContract $container, ContainerItemParameters $parameters) : void
     {
         $currentParameters = app(Containers::class)->getParameters($item, $container);
 
@@ -28,8 +28,10 @@ class UpdateItemInContainer
         $request->setParameters($parameters);
 
         $parameters = app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters;
+        $request->setParameters($parameters);
 
         $currentParameters->replaceAll($parameters->getAll());
+        $request->setCurrentParameters($currentParameters);
 
         ContainerItem::updateOrCreate([
             'container_id'   => $container->id,
@@ -39,5 +41,7 @@ class UpdateItemInContainer
         ], [
             'parameters'     => $currentParameters->getAll(),
         ]);
+
+        app(PropagateActions::class)->execute($container, $request);
     }
 }

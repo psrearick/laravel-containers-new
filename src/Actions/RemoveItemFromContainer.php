@@ -41,6 +41,7 @@ class RemoveItemFromContainer
         $parameters =
             (app(InvokeUpdateParameterActions::class)->execute($container, $request) ?? $parameters)
             ->set('quantity', $newQuantity);
+        $request->setParameters($parameters);
 
         if ($newQuantity <= 0) {
             $containerItem->delete();
@@ -50,5 +51,7 @@ class RemoveItemFromContainer
 
         $containerItem->parameters = $parameters->getAll();
         $containerItem->save();
+
+        app(PropagateActions::class)->execute($container, $request);
     }
 }

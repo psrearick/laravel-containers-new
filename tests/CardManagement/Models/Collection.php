@@ -4,19 +4,27 @@ namespace Psrearick\Containers\Tests\CardManagement\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Psrearick\Containers\Containers;
 use Psrearick\Containers\Contracts\ContainerContract as Container;
+use Psrearick\Containers\Contracts\ItemContract as Item;
+use Psrearick\Containers\Contracts\SingletonContract as Singleton;
 use Psrearick\Containers\Services\ContainerItemParameters;
 use Psrearick\Containers\Services\ContainerItemRequest;
 use Psrearick\Containers\Tests\CardManagement\Factories\CollectionFactory;
 use Psrearick\Containers\Tests\CardManagement\Models\Traits\HasCollectionCardActions;
 
-class Collection extends Model implements Container
+class Collection extends Model implements Container, Item, Singleton
 {
     use HasCollectionCardActions;
     use HasFactory;
 
     protected $guarded = [];
+
+    public function getSingletonContainers() : array
+    {
+        return [
+            Folder::class,
+        ];
+    }
 
     protected static function newFactory() : CollectionFactory
     {
@@ -44,7 +52,8 @@ class Collection extends Model implements Container
         $currentPrice       = $currentParameters->get('price') ?? $actualPrice;
         $currentQuantity    = $currentParameters->get('quantity');
         $clearedValue       = $currentValue - ($currentPrice * $currentQuantity);
-        $clearedValueAdded  = $currentValueAdded - ($currentParameters->get('price_when_added') ?? $currentPrice);
+        $clearedValueAdded  = $currentValueAdded -
+            ($currentParameters->get('price_when_added') ?? $currentPrice) * $currentQuantity;
         $newQuantity        = ($addedQuantity + $currentQuantity);
 
         $this->update([
@@ -63,8 +72,6 @@ class Collection extends Model implements Container
         $quantity       = abs($parameters->get('quantity'));
         $change         = $price * $quantity;
         $addedChange    = $addedPrice * $quantity;
-
-        $items = app(Containers::class)->getContainerItems($this, get_class($request->getItem()));
 
         $this->update([
             'value'            => $this->value - $change,

@@ -20,5 +20,13 @@ return new class () extends Migration {
             $table->integer('value_when_added')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('folders', static function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('value')->nullable();
+            $table->integer('value_when_added')->nullable();
+            $table->timestamps();
+        });
     }
 };
